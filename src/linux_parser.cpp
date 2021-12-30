@@ -31,6 +31,8 @@ string LinuxParser::OperatingSystem() {
       }
     }
   }
+  filestream.close();
+
   return value;
 }
 
@@ -44,6 +46,7 @@ string LinuxParser::Kernel() {
     std::istringstream linestream(line);
     linestream >> os >> version >> kernel;
   }
+  stream.close();
   return kernel;
 }
 
@@ -87,6 +90,7 @@ float LinuxParser::MemoryUtilization() {
       }
     }
   }
+  filestream.close();
   return mem_total;
 }
  
@@ -97,6 +101,7 @@ long LinuxParser::UpTime() {
   if (filestream.is_open()) {
     filestream >> uptime;
   }
+  filestream.close();
   return uptime;
 }
 
@@ -122,6 +127,7 @@ long LinuxParser::ActiveJiffies(int pid) {
     }
     starttime = stol(value);
   }
+  filestream.close();
 
   proc_active_jiffies = LinuxParser::Jiffies() - starttime;
 
@@ -153,6 +159,8 @@ long LinuxParser::IdleJiffies() {
       i++;
     }
   }
+  filestream.close();
+
   return idle_jiffies;
 }
 
@@ -169,6 +177,8 @@ vector<string> LinuxParser::CpuUtilization() {
       cpu_util.push_back(s);
     }
   }
+  filestream.close();
+
   return cpu_util;
 }
 
@@ -185,6 +195,8 @@ int LinuxParser::TotalProcesses() {
       return stoi(val);
     }
   }
+  filestream.close();
+
   return stoi(val);
 }
 
@@ -201,6 +213,8 @@ int LinuxParser::RunningProcesses() {
       return stoi(val);
     }
   }
+  filestream.close();
+
   return stoi(val);
 }
 
@@ -209,6 +223,8 @@ string LinuxParser::Command(int pid) {
   string command;
   std::ifstream filestream(kProcDirectory + to_string(pid) + kCmdlineFilename);
   std::getline(filestream, command);
+  filestream.close();
+
   return command;
 }
 
@@ -228,6 +244,8 @@ string LinuxParser::Ram(int pid) {
       }
     }
   }
+  filestream.close();
+
   return to_string(proc_ram_mb / 1000);
 }
 
@@ -247,6 +265,8 @@ string LinuxParser::Uid(int pid) {
       }
     }
   }
+  filestream.close();
+
   return uid;
 }
 
@@ -268,6 +288,8 @@ string LinuxParser::User(int pid) {
       }
     }
   }
+  filestream.close();
+
   return user_name;
 }
 
@@ -283,6 +305,8 @@ long LinuxParser::UpTime(int pid) {
     }
     starttime = stol(value);
   }
-  proc_uptime = (LinuxParser::UpTime() - starttime) / sysconf(_SC_CLK_TCK);
+  filestream.close();
+
+  proc_uptime = LinuxParser::UpTime() - (starttime / sysconf(_SC_CLK_TCK));
   return proc_uptime;
 }
