@@ -22,10 +22,10 @@ Process::Process(int pid) : pid_(pid) {
   Process::cpu_utilization_ = Process::CpuUtilization();
 }
 
-// TODO: Return this process's ID
+// Return this process's ID
 int Process::Pid() { return this->pid_; }
 
-// TODO: Return this process's CPU utilization
+// Return this process's CPU utilization
 float Process::CpuUtilization() {
   float system_time = LinuxParser::Jiffies();     // System Uptime in seconds
   float proc_time;
@@ -55,19 +55,24 @@ float Process::CpuUtilization() {
   return cpu_utilization_;
 }
 
-// TODO: Return the command that generated this process
+// Return the command that generated this process
 string Process::Command() { return this->command_; }
 
-// TODO: Return this process's memory utilization
+// Return this process's memory utilization
 string Process::Ram() { return this->ram_; }
 
-// TODO: Return the user (name) that generated this process
+// Return the user (name) that generated this process
 string Process::User() { return this->user_; }
 
-// TODO: Return the age of this process (in seconds)
+// Return the age of this process (in seconds)
 long int Process::UpTime() { return this->uptime_; }
 
 // Overload the "less than" comparison operator for Process objects
 bool Process::operator<(Process const& a) const {
     return this->cpu_utilization_ < a.cpu_utilization_;
+}
+
+// Compares two pointers to Process objects:  for sorting a vector of Process pointers
+bool Process::CompareProcessPtr(Process* proc_ptr1, Process* proc_ptr2)  { 
+  return (*proc_ptr1) < (*proc_ptr2); 
 }

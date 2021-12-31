@@ -9,9 +9,9 @@ using std::string;
 
 class Processor {
  public:
-  float Utilization();  // TODO: See src/processor.cpp
+  float Utilization();  // See src/processor.cpp
 
-  // TODO: Declare any necessary private members
+  // Declare any necessary private members
  private:
   float previous_active_cpu_{0};
   float prevous_total_cpu_{0};
