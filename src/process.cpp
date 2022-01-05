@@ -66,7 +66,10 @@ float Process::CpuUtilization() {
 string Process::Command() { return command_; }
 
 // Return this process's memory utilization
-string Process::Ram() { return ram_; }
+string Process::Ram() { 
+  ram_ = LinuxParser::Ram(pid_);
+  return ram_; 
+}
 
 // Return the user (name) that generated this process
 string Process::User() { return user_; }
@@ -75,11 +78,11 @@ string Process::User() { return user_; }
 long int Process::UpTime() { return uptime_; }
 
 // Overload the "less than" comparison operator for Process objects
-bool Process::operator<(Process const& a) const {
+bool Process::operator<(const Process& a) const {
     return cpu_utilization_ < a.cpu_utilization_;
 }
 
-// Compares two unique_ptr<Process> for sorting a vector of unique_ptr<Process>
-bool Process::CompareProcess(Process proc1, Process proc2) { 
-  return proc1 < proc2; 
-}
+// Compares two Process objects for sorting a vector<Process>
+// bool Process::CompareProcess(Process proc1, Process proc2) { 
+//   return proc1 < proc2; 
+// }

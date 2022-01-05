@@ -48,9 +48,9 @@ vector<Process>& System::Processes() {
   prev_pids_.clear();
   prev_pids_ = pids;
 
-  // Sort all Process pointers in processes_ by their cpu_utilization values
-  std::sort(processes_.begin(), processes_.end(), Process::CompareProcess);
-  std::reverse(processes_.begin(), processes_.end());   // necessary to reverse???
+  // Sort all Process objects in processes_ by their cpu_utilization values
+  std::sort(processes_.rbegin(), processes_.rend());
+  
   return System::processes_;
 }
 

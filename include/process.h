@@ -14,8 +14,8 @@ class Process {
   float CpuUtilization();                  // See src/process.cpp
   std::string Ram();                       // See src/process.cpp
   long int UpTime();                       // See src/process.cpp
-  bool operator<(Process const& a) const;  // See src/process.cpp
-  static bool CompareProcess(Process proc_ptr1, Process proc_ptr2);
+  bool operator<(const Process& a) const;  // See src/process.cpp
+  // static bool CompareProcess(Process proc_ptr1, Process proc_ptr2);
 
  private:
   int pid_;
