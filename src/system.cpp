@@ -18,7 +18,7 @@ using std::vector;
 Processor& System::Cpu() { return cpu_; }
 
 // Return a container composed of the system's processes  
-vector<Process*>& System::Processes() {
+vector<Process>& System::Processes() {
   // Create vector of all current pids
   vector<int> pids = LinuxParser::Pids();
 
@@ -26,31 +26,30 @@ vector<Process*>& System::Processes() {
   // pid.  If not, delete reference and remove from processes_.
   int processes_size = processes_.size();
   for (int i = 0; i < processes_size; i++) {
-    bool proc_pid_in_pids = std::find(pids.begin(), pids.end(), (processes_[i])->Pid()) != pids.end();
+    bool proc_pid_in_pids = std::find(pids.begin(), pids.end(), (processes_[i]).Pid()) != pids.end();
     if (!proc_pid_in_pids) {
-      delete (processes_[i]);
       processes_.erase(processes_.begin() + i);
     }
   }
 
   // For each active pid:
-  for (int pid : pids) {
+  for (auto pid : pids) {
     // Check if pid was already active on last Processes() call.
     // If pid was not already active, add to processes_
     bool pid_in_prev_pids = std::find(prev_pids_.begin(), prev_pids_.end(), pid) != prev_pids_.end();
     if (!pid_in_prev_pids) {
-      Process* new_process = new Process(pid);
-      System::processes_.push_back(new_process);
+      Process new_proc(pid);
+      System::processes_.push_back(new_proc);
     }
   }
 
   // clear prev_pids_ and store curren pids vector in 
   // prev_pids_ for next Processes() call.
   prev_pids_.clear();
-  prev_pids_= pids;
+  prev_pids_ = pids;
 
   // Sort all Process pointers in processes_ by their cpu_utilization values
-  std::sort(processes_.begin(), processes_.end(), Process::CompareProcessPtr);
+  std::sort(processes_.begin(), processes_.end(), Process::CompareProcess);
   std::reverse(processes_.begin(), processes_.end());   // necessary to reverse???
   return System::processes_;
 }

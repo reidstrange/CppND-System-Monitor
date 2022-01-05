@@ -15,7 +15,7 @@ class Process {
   std::string Ram();                       // See src/process.cpp
   long int UpTime();                       // See src/process.cpp
   bool operator<(Process const& a) const;  // See src/process.cpp
-  static bool CompareProcessPtr(Process* proc_ptr1, Process* proc_ptr2);
+  static bool CompareProcess(Process proc_ptr1, Process proc_ptr2);
 
  private:
   int pid_;

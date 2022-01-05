@@ -23,7 +23,7 @@ Process::Process(int pid) : pid_(pid) {
 }
 
 // Return this process's ID
-int Process::Pid() { return this->pid_; }
+int Process::Pid() { return pid_; }
 
 // Return this process's CPU utilization
 float Process::CpuUtilization() {
@@ -56,23 +56,23 @@ float Process::CpuUtilization() {
 }
 
 // Return the command that generated this process
-string Process::Command() { return this->command_; }
+string Process::Command() { return command_; }
 
 // Return this process's memory utilization
-string Process::Ram() { return this->ram_; }
+string Process::Ram() { return ram_; }
 
 // Return the user (name) that generated this process
-string Process::User() { return this->user_; }
+string Process::User() { return user_; }
 
 // Return the age of this process (in seconds)
-long int Process::UpTime() { return this->uptime_; }
+long int Process::UpTime() { return uptime_; }
 
 // Overload the "less than" comparison operator for Process objects
 bool Process::operator<(Process const& a) const {
-    return this->cpu_utilization_ < a.cpu_utilization_;
+    return cpu_utilization_ < a.cpu_utilization_;
 }
 
-// Compares two pointers to Process objects:  for sorting a vector of Process pointers
-bool Process::CompareProcessPtr(Process* proc_ptr1, Process* proc_ptr2)  { 
-  return (*proc_ptr1) < (*proc_ptr2); 
+// Compares two unique_ptr<Process> for sorting a vector of unique_ptr<Process>
+bool Process::CompareProcess(Process proc1, Process proc2) { 
+  return proc1 < proc2; 
 }
