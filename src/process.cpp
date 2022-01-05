@@ -27,7 +27,7 @@ int Process::Pid() { return pid_; }
 
 // Return this process's CPU utilization
 float Process::CpuUtilization() {
-  float system_time = LinuxParser::Jiffies();     // System Uptime in seconds
+  float system_time = LinuxParser::Jiffies();     // System Uptime
   float proc_time;
   float utime;                              // Process Time values
   float stime;
@@ -36,19 +36,26 @@ float Process::CpuUtilization() {
   std::ifstream filestream(LinuxParser::kProcDirectory + to_string(pid_) + LinuxParser::kStatFilename);
   if (filestream.is_open()) {
     string value;
-    for (int i = 0; i < 15; i++) {
+    for (int i = 1; i < 23; i++) {
       filestream >> value;
-      if (i == 13) {
+      if (i == 14) {
         utime = stof(value);
       }
-      if (i == 14) {
+      if (i == 15) {
         stime = stof(value);
       }
     }
   }
+  filestream.close();
+
+  // Total process jiffies is sum of utime and stime from /proc/[pid]/stat
   proc_time = utime + stime;
 
+  // Calculate cpu usage for this process over the last time interval.
   cpu_utilization_ = (proc_time - proc_time_previous_) / (system_time - system_time_previous_);
+
+  // Store current process active time and current total system time to data members
+  // for use in next Process::CpuUtilization call.
   proc_time_previous_ = proc_time;
   system_time_previous_ = system_time;
 

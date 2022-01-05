@@ -171,7 +171,7 @@ vector<string> LinuxParser::CpuUtilization() {
   string s;
   std::ifstream filestream(kProcDirectory + kStatFilename);
   std::getline(filestream, s);
-  std::stringstream linestream(s);
+  std::istringstream linestream(s);
   while (linestream >> s) {
     if (s != "cpu") {
       cpu_util.push_back(s);
