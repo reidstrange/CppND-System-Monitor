@@ -49,8 +49,8 @@ vector<Process>& System::Processes() {
   prev_pids_ = pids;
 
   // Sort all Process objects in processes_ by their cpu_utilization values
-  std::sort(processes_.rbegin(), processes_.rend());
-  
+  std::sort(processes_.begin(), processes_.end());
+
   return System::processes_;
 }
 
